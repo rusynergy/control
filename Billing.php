@@ -60,8 +60,7 @@
 
 			if ($httpcode == 200)
 			{
-			   	$data = json_decode($data, true);
-                return $data;
+			   	$data = json_decode($data, true);              
 				if (isset($data->errno))
 					return array(
 					  	'result' => false,
