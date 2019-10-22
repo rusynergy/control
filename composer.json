@@ -1,0 +1,17 @@
+{
+    "name": "rusynergy/control",
+    "type": "library",
+    "description": "Billing Client class",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Synergy",
+            "email": "synergy@macrox.ru",
+            "homepage": "macrox.ru"
+        }       
+    ],
+    "require": {
+        "php": "^7.0",       
+    }
+   
+}
