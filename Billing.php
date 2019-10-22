@@ -4,9 +4,9 @@
 
     class Billing {
 
-		public $key = '';
-		public $ip  = '255.0.0.0';
-		public $endpoint = '';
+		protected $key = '';
+		protected $ip  = '255.0.0.0';
+		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
 		{
@@ -15,7 +15,7 @@
 			$this->key = sha1($this->ip . $salt);
 		}
 
-	    private function query(string $action, array $data, string $method = 'GET')
+	  private function query(string $action, array $data, string $method = 'GET')
 		{
 		 	$ch = curl_init();
 			$get = '';
