@@ -8,11 +8,11 @@
 		public $ip  = '255.0.0.0';
 		public $endpoint = '';
 
-		function __construct(string $endpoint, string $salt)
+		function __construct()
 		{
-		    $this->endpoint = 'https://' . $endpoint . '/'; 
+		    #$this->endpoint = 'https://' . $endpoint . '/'; 
 			$this->ip = gethostbyname(gethostname());
-			$this->key = sha1($this->ip . $salt);
+			$this->key = sha1($this->ip . $this->key);
 		}
 
 	    private function query(string $action, array $data, string $method = 'GET')
@@ -61,10 +61,10 @@
 			if ($httpcode == 200)
 			{
 			   	$data = json_decode($data, true);              
-				if (isset($data->errno))
+				if (isset($data['errno']))
 					return array(
 					  	'result' => false,
-						'text'   => $data->str
+						'text'   => $data['str']
 					);
 				return $data;
 			}
@@ -234,10 +234,6 @@
 		{
 			return $this->query('tariff', array());
 		}
-
-
-
-
 
 	}
 
