@@ -8,11 +8,11 @@
 		public $ip  = '255.0.0.0';
 		public $endpoint = '';
 
-		function __construct()
+		function __construct(string $endpoint, string $salt)
 		{
-		    #$this->endpoint = 'https://' . $endpoint . '/'; 
+		    $this->endpoint = 'https://' . $endpoint . '/'; 
 			$this->ip = gethostbyname(gethostname());
-			$this->key = sha1($this->ip . $this->key);
+			$this->key = sha1($this->ip . $salt);
 		}
 
 	    private function query(string $action, array $data, string $method = 'GET')
@@ -234,6 +234,10 @@
 		{
 			return $this->query('tariff', array());
 		}
+
+
+
+
 
 	}
 
