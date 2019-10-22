@@ -1,6 +1,6 @@
 <?php
 
-	namespace common\components;
+	namespace Renua;
 
     class Billing {
 
