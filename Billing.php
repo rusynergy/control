@@ -5,7 +5,7 @@
     class Billing {
 
 		private $key = '';
-		private $ip  = '0.0.0.0';
+		private $ip  = '255.0.0.0';
 		private $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
