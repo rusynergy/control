@@ -15,7 +15,7 @@
 			$this->key = sha1($this->ip . $salt);
 		}
 
-	  private function query(string $action, array $data, string $method = 'GET')
+	    private function query(string $action, array $data, string $method = 'GET')
 		{
 		 	$ch = curl_init();
 			$get = '';
@@ -169,12 +169,13 @@
 		* @param int $shop_id ShopId
         * @param string $name Name
 		*/
-		function shop_options(int $shop_id = 0, string $name = '', int $tariff = 0, bool $status = true)
+		function shop_options(int $shop_id = 0, string $name = '', int $tariff = 0, bool $status = true, int $domain_id = 0)
 		{
 			return $this->query('shop/options', array(
-				'id'   => $shop_id,
-                'name' => $name,
+				'id'     => $shop_id,
+                'name'   => $name,
                 'tariff' => $tariff,
+                'main'   => $domain_id,
                 'status' => $status,
 			), 'POST');
 		}
@@ -233,6 +234,28 @@
 		function tariff_list()
 		{
 			return $this->query('tariff', array());
+		}
+        
+        /**
+		* Switch On Domain
+		* @param int $domain_id Domain Id
+		*/
+		function domain_on(int $domain_id = 0)
+		{
+			return $this->query('shop/domain/on', array(
+				'id' => $domain_id
+			), 'POST');
+		}
+        
+        /**
+		* Switch Off Domain
+		* @param int $domain_id Domain Id
+		*/
+		function domain_off(int $domain_id = 0)
+		{
+			return $this->query('shop/domain/off', array(
+				'id' => $domain_id
+			), 'POST');
 		}
 
 
