@@ -49,6 +49,13 @@
                     curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 				} break;
+                
+                case 'DELETE':
+				{
+					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+                    curl_setopt($ch, CURLOPT_POST, true);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+				} break;
 			}
 
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -256,6 +263,17 @@
 			return $this->query('shop/domain/off', array(
 				'id' => $domain_id
 			), 'POST');
+		}
+        
+        /**
+		* Remove Domain
+		* @param int $domain_id Domain Id
+		*/
+		function domain_remove(int $domain_id = 0)
+		{
+			return $this->query('shop/domain/remove', array(
+				'id' => $domain_id
+			), 'DELETE');
 		}
 
 
