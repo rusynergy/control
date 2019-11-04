@@ -234,6 +234,19 @@
 			), 'POST');
 		}
         
+        /**
+		* Top up balance by bonus
+		* @param int $user_id User Id
+        * @param float $amount Amount in RUB
+		*/
+		function user_bonus(int $user_id, float $amount = 300)
+		{
+			return $this->query('user/bonus', array(
+				'user' => $user_id,
+                'amount' => $amount
+			), 'PUT');
+		}
+        
         
         /**
 		* Get Info about tariffs		
