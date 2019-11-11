@@ -6,13 +6,14 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
+        protected $ua = 'Client/1.1.5';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
 		{
 		    $this->endpoint = 'https://' . $endpoint . '/'; 
 			$this->ip = gethostbyname(gethostname());
-			$this->key = sha1($this->ip . $salt);
+			$this->key = sha1($this->ip . $salt);          
 		}
 
 	    private function query(string $action, array $data, string $method = 'GET')
@@ -28,7 +29,7 @@
 			$get = '?' . http_build_query($data);
 
 			curl_setopt($ch, CURLOPT_URL, $this->endpoint . $action . '/' . $get);
-			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)');
+			curl_setopt($ch, CURLOPT_USERAGENT, isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : $this->ua);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
@@ -84,10 +85,11 @@
 		* Get information about shop, owner and other shops
 		* @param int $shop_id Shop's Id
 		*/
-		function shop_info(int $shop_id = 0)
+		function shop_info(int $shop_id = 0, int $ssl = 0)
 		{
 			return $this->query('shop', array(
-				'id' => $shop_id
+				'id' => $shop_id,
+                'ssl' => $ssl,
 			));
 		}
         
