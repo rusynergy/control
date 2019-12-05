@@ -258,6 +258,30 @@
 			return $this->query('tariff', array());
 		}
         
+        
+        /**
+		* Get payment methods		
+		*/
+		function money_gates()
+		{
+			return $this->query('money', array());
+		}
+        
+        /**
+		* Go to payment	
+        * @param integer $user_id User id
+        * @param string  $method Payment method, e.g. Kassa/bank_card
+        * @param integer $amount Amount, RUB
+		*/
+		function money_go(int $user_id, string $method, int $amount)
+		{
+			return $this->query('money/go', array(
+                'user_id'  => $user_id,
+                'method' => $method,
+                'amount' => $amount,
+            ));
+		}
+        
         /**
 		* Switch On Domain
 		* @param int $domain_id Domain Id
