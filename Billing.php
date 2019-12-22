@@ -6,7 +6,7 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.1.5';
+        protected $ua = 'Client/1.1.7';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
@@ -268,6 +268,33 @@
 		}
         
         /**
+		* Get user's topup history
+        * @param integer $user_id User id		
+		*/
+		function money_in(int $user_id)
+		{
+			return $this->query('money/in', array(
+                'user_id' => $user_id
+            ));
+		}
+        
+         /**
+		* Get invoice 
+        * @param integer $user_id User id
+        * @param string $inn Company INN
+        * @param integer $amount User id		
+		*/
+		function money_invoice(int $user_id, string $inn, int $amount)
+		{
+			return $this->query('money/invoice', array(
+                'user_id' => $user_id,
+                'inn'     => $inn,
+                'amount'  => $amount,
+                'project' => 1,
+            ), 'POST');
+		}
+        
+        /**
 		* Go to payment	
         * @param integer $user_id User id
         * @param string  $method Payment method, e.g. Kassa/bank_card
@@ -314,6 +341,18 @@
 				'id' => $domain_id
 			), 'DELETE');
 		}
+        
+        /**
+		* Organization Suggestions by name, inn, ogrn, director
+		* @param int $domain_id Domain Id
+		*/
+		function helper_org(string $query)
+		{
+			return $this->query('helper/org', array(
+				'query' => $query
+			), 'POST');
+		}
+
 
 
 
