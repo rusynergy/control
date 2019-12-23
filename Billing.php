@@ -6,7 +6,7 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.1.7';
+        protected $ua = 'Client/1.1.8';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
@@ -278,7 +278,7 @@
             ));
 		}
         
-         /**
+        /**
 		* Get invoice 
         * @param integer $user_id User id
         * @param string $inn Company INN
@@ -291,6 +291,21 @@
                 'inn'     => $inn,
                 'amount'  => $amount,
                 'project' => 1,
+            ), 'POST');
+		}
+        
+        /**
+		* Get invoice 
+        * @param integer $user_id User id
+        * @param integer $invoice_id Invoice Id     
+        * @param string $email Email
+		*/
+		function money_invoice_send(int $user_id, int $invoice_id, string $email)
+		{
+			return $this->query('money/invoice/send', array(
+                'user_id' => $user_id,
+                'invoice_id'=> $invoice_id,
+                'email'  => $email,                
             ), 'POST');
 		}
         
