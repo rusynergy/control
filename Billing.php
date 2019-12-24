@@ -6,7 +6,7 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.1.8';
+        protected $ua = 'Client/1.1.9';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
@@ -270,11 +270,26 @@
         /**
 		* Get user's topup history
         * @param integer $user_id User id		
+        * @param string $month Date YYYY-MM
 		*/
-		function money_in(int $user_id)
+		function money_in(int $user_id, string $month = '')
 		{
 			return $this->query('money/in', array(
-                'user_id' => $user_id
+                'user_id' => $user_id,
+                'month' => $month,
+            ));
+		}
+        
+        /**
+		* Get user's money off history
+        * @param integer $user_id User id		
+        * @param string $month Date YYYY-MM
+		*/
+		function money_out(int $user_id, string $month = '')
+		{
+			return $this->query('money/out', array(
+                'user_id' => $user_id,
+                'month' => $month,
             ));
 		}
         
@@ -367,6 +382,62 @@
 				'query' => $query
 			), 'POST');
 		}
+        
+        
+        /**
+		* List User tickets
+		* @param int $user_id user Id
+		*/
+		function support_list(int $user_id)
+		{
+			return $this->query('support', array(
+				'user_id' => $user_id
+			));
+		}
+               
+        /**
+		* New ticket
+		* @param int $user_id user Id
+        * @param string $subject Ticket Subject
+        * @param string $content Ticket Content in plain
+		*/
+		function support_new(int $user_id, string $subject, string $content)
+		{
+			return $this->query('support/new', array(
+				'user_id' => $user_id,
+                'subject' => $subject,
+                'content' => $content,
+			), 'POST');
+		}
+        
+        /**
+		* Get ticket
+		* @param int $user_id user Id
+        * @param int $ticket_id Ticket Id      
+		*/
+		function support_ticket(int $user_id, int $ticket_id)
+		{
+			return $this->query('support/ticket', array(
+				'user_id' => $user_id,
+                'ticket_id' => $ticket_id,                
+			));
+		}
+        
+        /**
+		* New ticket
+		* @param int $user_id user Id
+        * @param string $subject Ticket Subject
+        * @param string $content Ticket Content in plain
+		*/
+		function support_ticket_reply(int $user_id, int $ticket_id, string $content)
+		{
+			return $this->query('support/ticket', array(
+				'user_id' => $user_id,
+                'ticket_id' => $ticket_id,
+                'content' => $content,
+			), 'POST');
+		}
+        
 
 
 
