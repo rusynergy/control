@@ -6,14 +6,14 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.1.9';
+        protected $ua = 'Client/1.2.0';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
 		{
-		    $this->endpoint = 'https://' . $endpoint . '/'; 
+		    $this->endpoint = 'https://' . $endpoint . '/';
 			$this->ip = gethostbyname(gethostname());
-			$this->key = sha1($this->ip . $salt);          
+			$this->key = sha1($this->ip . $salt);
 		}
 
 	    private function query(string $action, array $data, string $method = 'GET')
@@ -43,14 +43,14 @@
 					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 				} break;
-                
+
                	case 'POST':
 				{
 					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
                     curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 				} break;
-                
+
                 case 'DELETE':
 				{
 					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -68,7 +68,7 @@
 
 			if ($httpcode == 200)
 			{
-			   	$data = json_decode($data, true);              
+			   	$data = json_decode($data, true);
 				if (isset($data['errno']))
 					return array(
 					  	'result' => false,
@@ -92,7 +92,7 @@
                 'ssl' => $ssl,
 			));
 		}
-        
+
         /**
 		* Get all active shops
 		*/
@@ -124,7 +124,7 @@
                 'channel' => $channel
 			), 'PUT');
 		}
-        
+
         /**
 		* Switch On Site
 		* @param int $shop_id ShopId
@@ -135,7 +135,7 @@
 				'id' => $shop_id
 			), 'POST');
 		}
-        
+
         /**
 		* Switch Off Site
 		* @param int $shop_id ShopId
@@ -146,7 +146,7 @@
 				'id' => $shop_id
 			), 'POST');
 		}
-        
+
         /**
 		* Owner Password
 		* @param int $shop_id ShopId
@@ -158,8 +158,8 @@
                 'password' => $password
 			), 'POST');
 		}
-        
-        
+
+
        	/**
 		* Set new shop's name
 		* @param int $shop_id ShopId
@@ -172,7 +172,7 @@
                 'name' => $name,
 			), 'POST');
 		}
-        
+
         /**
 		* Set shop options
 		* @param int $shop_id ShopId
@@ -188,7 +188,7 @@
                 'status' => $status,
 			), 'POST');
 		}
-        
+
         /**
 		* Connect new domain to shop
 		* @param int $shop_id ShopId
@@ -216,13 +216,14 @@
 		* Register new user and create new shop
 		* @param string $email E-Mail address
 		*/
-		function user_new(string $email = 'd@ufanet.xyz')
+		function user_new(string $email = 'd@ufanet.xyz', string $name = 'Владелец')
 		{
 			return $this->query('user/new', array(
-				'email' => $email
+				'email' => $email,
+				'name'  => $name,
 			), 'PUT');
 		}
-        
+
         /**
 		* Login User
 		* @param string $email E-Mail address
@@ -235,7 +236,7 @@
                 'password' => $password
 			), 'POST');
 		}
-        
+
         /**
 		* Top up balance by bonus
 		* @param int $user_id User Id
@@ -248,28 +249,28 @@
                 'amount' => $amount
 			), 'PUT');
 		}
-        
-        
+
+
         /**
-		* Get Info about tariffs		
+		* Get Info about tariffs
 		*/
 		function tariff_list()
 		{
 			return $this->query('tariff', array());
 		}
-        
-        
+
+
         /**
-		* Get payment methods		
+		* Get payment methods
 		*/
 		function money_gates()
 		{
 			return $this->query('money', array());
 		}
-        
+
         /**
 		* Get user's topup history
-        * @param integer $user_id User id		
+        * @param integer $user_id User id
         * @param string $month Date YYYY-MM
 		*/
 		function money_in(int $user_id, string $month = '')
@@ -279,10 +280,10 @@
                 'month' => $month,
             ));
 		}
-        
+
         /**
 		* Get user's money off history
-        * @param integer $user_id User id		
+        * @param integer $user_id User id
         * @param string $month Date YYYY-MM
 		*/
 		function money_out(int $user_id, string $month = '')
@@ -292,12 +293,12 @@
                 'month' => $month,
             ));
 		}
-        
+
         /**
-		* Get invoice 
+		* Get invoice
         * @param integer $user_id User id
         * @param string $inn Company INN
-        * @param integer $amount User id		
+        * @param integer $amount User id
 		*/
 		function money_invoice(int $user_id, string $inn, int $amount)
 		{
@@ -308,11 +309,11 @@
                 'project' => 1,
             ), 'POST');
 		}
-        
+
         /**
-		* Get invoice 
+		* Get invoice
         * @param integer $user_id User id
-        * @param integer $invoice_id Invoice Id     
+        * @param integer $invoice_id Invoice Id
         * @param string $email Email
 		*/
 		function money_invoice_send(int $user_id, int $invoice_id, string $email)
@@ -320,12 +321,12 @@
 			return $this->query('money/invoice/send', array(
                 'user_id' => $user_id,
                 'invoice_id'=> $invoice_id,
-                'email'  => $email,                
+                'email'  => $email,
             ), 'POST');
 		}
-        
+
         /**
-		* Go to payment	
+		* Go to payment
         * @param integer $user_id User id
         * @param string  $method Payment method, e.g. Kassa/bank_card
         * @param integer $amount Amount, RUB
@@ -338,7 +339,7 @@
                 'amount' => $amount,
             ));
 		}
-        
+
         /**
 		* Switch On Domain
 		* @param int $domain_id Domain Id
@@ -349,7 +350,7 @@
 				'id' => $domain_id
 			), 'POST');
 		}
-        
+
         /**
 		* Switch Off Domain
 		* @param int $domain_id Domain Id
@@ -360,7 +361,7 @@
 				'id' => $domain_id
 			), 'POST');
 		}
-        
+
         /**
 		* Remove Domain
 		* @param int $domain_id Domain Id
@@ -371,7 +372,7 @@
 				'id' => $domain_id
 			), 'DELETE');
 		}
-        
+
         /**
 		* Organization Suggestions by name, inn, ogrn, director
 		* @param int $domain_id Domain Id
@@ -382,8 +383,8 @@
 				'query' => $query
 			), 'POST');
 		}
-        
-        
+
+
         /**
 		* List User tickets
 		* @param int $user_id user Id
@@ -394,7 +395,7 @@
 				'user_id' => $user_id
 			));
 		}
-               
+
         /**
 		* New ticket
 		* @param int $user_id user Id
@@ -409,20 +410,20 @@
                 'content' => $content,
 			), 'POST');
 		}
-        
+
         /**
 		* Get ticket
 		* @param int $user_id user Id
-        * @param int $ticket_id Ticket Id      
+        * @param int $ticket_id Ticket Id
 		*/
 		function support_ticket(int $user_id, int $ticket_id)
 		{
 			return $this->query('support/ticket', array(
 				'user_id' => $user_id,
-                'ticket_id' => $ticket_id,                
+                'ticket_id' => $ticket_id,
 			));
 		}
-        
+
         /**
 		* New ticket
 		* @param int $user_id user Id
@@ -437,7 +438,7 @@
                 'content' => $content,
 			), 'POST');
 		}
-        
+
 
 
 
