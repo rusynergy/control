@@ -6,7 +6,7 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.2.0';
+        protected $ua = 'Client/1.2.1';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
@@ -32,7 +32,7 @@
 			curl_setopt($ch, CURLOPT_USERAGENT, isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : $this->ua);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
