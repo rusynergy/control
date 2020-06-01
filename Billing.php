@@ -6,7 +6,7 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.2.2';
+        protected $ua = 'Client/1.2.3';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
@@ -254,7 +254,7 @@
 		function user_email_bonus(string $email, float $amount = 300)
 		{
 			return $this->query('user/emailbonus', array(
-				'email' => $bonus,
+				'email' => $email,
                 'amount' => $amount
 			), 'PUT');
 		}
