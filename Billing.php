@@ -6,7 +6,7 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.2.5';
+        protected $ua = 'Client/1.2.7';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
@@ -147,6 +147,17 @@
 			), 'POST');
 		}
 
+		/**
+		* Mark to remove
+		* @param int $shop_id ShopId
+		*/
+		function shop_remove(int $shop_id = 0)
+		{
+			return $this->query('shop/remove', array(
+				'id' => $shop_id
+			), 'POST');
+		}
+
         /**
 		* Owner Password
 		* @param int $shop_id ShopId
@@ -213,14 +224,79 @@
 		}
 
 		/**
+		* Generate code for password recovery
+		* @param string $email email
+		*/
+		function user_recovery_start($email)
+		{
+			return $this->query('user/recovery', array(
+				'email' => $email
+			), 'POST');
+		}
+
+		/**
+		* Check code and generate password
+		* @param string $email email
+		*/
+		function user_recovery_check($email, $code, $num)
+		{
+			return $this->query('user/recovery/check', array(
+				'email' => $email,
+				'num' => $num,
+				'code' => $code
+			), 'POST');
+		}
+
+
+		/**
+		* Generate code for registration
+		* @param string $email email
+		*/
+		function user_code_start($email)
+		{
+			return $this->query('user/code', array(
+				'email' => $email
+			), 'POST');
+		}
+
+		/**
+		* Check code for registration
+		* @param string $email email
+		*/
+		function user_code_check($email, $code, $num)
+		{
+			return $this->query('user/code/check', array(
+				'email' => $email,
+				'num' => $num,
+				'code' => $code
+			), 'POST');
+		}
+
+		/**
 		* Register new user and create new shop
 		* @param string $email E-Mail address
 		*/
-		function user_new(string $email = 'd@ufanet.xyz', string $name = 'Владелец')
+		function user_new(string $email = 'd@ufanet.xyz', string $name = 'Владелец', string $channel = '', string $source = '')
 		{
 			return $this->query('user/new', array(
 				'email' => $email,
 				'name'  => $name,
+				'channel' => $channel,
+				'source' => $source
+			), 'PUT');
+		}
+
+		/**
+		* Register new user and create new shop
+		* @param string $email E-Mail address
+		*/
+		function user_new_emulate(string $email, string $name = 'Владелец', string $channel = '', string $source = '')
+		{
+			return $this->query('user/new', array(
+				'email' => $email,
+				'name'  => $name,
+				'channel' => $channel,
+				'source' => $source
 			), 'PUT');
 		}
 
