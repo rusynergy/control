@@ -6,7 +6,7 @@
 
 		protected $key = '';
 		protected $ip  = '255.0.0.0';
-        protected $ua = 'Client/1.2.7';
+        protected $ua = 'Client/1.2.8';
 		protected $endpoint = '';
 
 		function __construct(string $endpoint, string $salt)
@@ -94,11 +94,12 @@
 		}
 
         /**
-		* Get all active shops
+		* Get all shops
+		* array[filter] = on/off
 		*/
-		function shop_all()
+		function shop_all(array $filter = array())
 		{
-			return $this->query('shop/all', array());
+			return $this->query('shop/all', $filter);
 		}
 
 		/**
